@@ -1,0 +1,84 @@
+{
+    "eventDetails": [
+      {
+        "id": "airsoft-battle-2024",
+        "slug": "airsoft-battle-2024",
+        "organizerId": "tactical-masters",
+        "title": "Airsoft Battle 2024",
+        "description": "Dołącz do najbardziej ekscytującej bitwy roku!\n\nWalcz w drużynach w malowniczym leśnym terenie.",
+        "date": "2024-09-10"
+      },
+      {
+        "id": "urban-skirmish",
+        "slug": "urban-skirmish",
+        "organizerId": "urban-tactics",
+        "title": "Urban Skirmish",
+        "description": "Przygotuj się na dynamiczne starcia w środowisku miejskim.\n\nIdealne dla miłośników realistycznych potyczek!",
+        "date": "2024-07-20"
+      },
+      {
+        "id": "desert-siege",
+        "slug": "desert-siege",
+        "organizerId": "tactical-masters",
+        "title": "Desert Siege",
+        "description": "Stań się mistrzem pustyni w tej wyjątkowej bitwie.\n\nTaktyka i współpraca kluczem do zwycięstwa.",
+        "date": "2024-06-15"
+      }
+    ],
+    "events": [
+      {
+        "id": "airsoft-battle-2024",
+        "slug": "airsoft-battle-2024",
+        "organizerId": "tactical-masters",
+        "organizer": {
+          "id": "tactical-masters",
+          "slug": "tactical-masters",
+          "name": "Tactical Masters",
+          "count": 2
+        },
+        "title": "Airsoft Battle 2024",
+        "intro": "Ekscytujące starcie w terenie leśnym!"
+      },
+      {
+        "id": "urban-skirmish",
+        "slug": "urban-skirmish",
+        "organizerId": "urban-tactics",
+        "organizer": {
+          "id": "urban-tactics",
+          "slug": "urban-tactics",
+          "name": "Urban Tactics",
+          "count": 1
+        },
+        "title": "Urban Skirmish",
+        "intro": "Miejska walka z nowoczesnym wyposażeniem."
+      },
+      {
+        "id": "desert-siege",
+        "slug": "desert-siege",
+        "organizerId": "tactical-masters",
+        "organizer": {
+          "id": "tactical-masters",
+          "slug": "tactical-masters",
+          "name": "Tactical Masters",
+          "count": 2
+        },
+        "title": "Desert Siege",
+        "intro": "Zdominuj pustynny teren w tej ekscytującej bitwie."
+      }
+    ],
+    "organizers": [
+      {
+        "id": "tactical-masters",
+        "slug": "tactical-masters",
+        "name": "Tactical Masters",
+        "count": 2
+      },
+      {
+        "id": "urban-tactics",
+        "slug": "urban-tactics",
+        "name": "Urban Tactics",
+        "count": 1
+      }
+    ]
+  }
+  
