@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Event } from '@/data/events'
+import type { Event } from "@/data/events";
 
 const { event } = defineProps<{ event: Event }>();
 
@@ -7,19 +7,19 @@ const isHover = ref(false);
 </script>
 
 <template>
-    <div class="card" :class="{hover: isHover}">
-        <h2>{{ event.title }}</h2>
-        <OrganizerLink :organizer="event.organizer" />
-        <RenderMarkdown :source="event.intro" />
-        <NuxtLink
-            class="more"
-            :to="`/events/${event.slug}`"
-            @mouseenter="isHover = true"
-            @mouseleave="isHover = false"
-            >
-            More ...
-        </NuxtLink>
-    </div>
+  <div class="card" :class="{ hover: isHover }">
+    <h2>{{ event.title }}</h2>
+    <OrganizerLink :organizer="event.organizer" />
+    <RenderMarkdown :source="event.intro" />
+    <NuxtLink
+      class="more"
+      :to="`/events/${event.slug}`"
+      @mouseenter="isHover = true"
+      @mouseleave="isHover = false"
+    >
+      More ...
+    </NuxtLink>
+  </div>
 </template>
 
 <style scoped lang="scss">
