@@ -1,0 +1,44 @@
+[
+    {
+        "id": "tactical-masters",
+        "slug": "tactical-masters",
+        "name": "Tactical Masters",
+        "count": 6
+      },
+      {
+        "id": "urban-tactics",
+        "slug": "urban-tactics",
+        "name": "Urban Tactics",
+        "count": 6
+      },
+      {
+        "id": "extreme-adventures",
+        "slug": "extreme-adventures",
+        "name": "Extreme Adventures",
+        "count": 4
+      },
+      {
+        "id": "adventure-hunters",
+        "slug": "adventure-hunters",
+        "name": "Adventure Hunters",
+        "count": 2
+      },
+      {
+        "id": "battle-elite",
+        "slug": "battle-elite",
+        "name": "Battle Elite",
+        "count": 2
+      },
+      {
+        "id": "tactical-legends",
+        "slug": "tactical-legends",
+        "name": "Tactical Legends",
+        "count": 2
+      },
+      {
+        "id": "precision-warriors",
+        "slug": "precision-warriors",
+        "name": "Precision Warriors",
+        "count": 3
+      }
+]

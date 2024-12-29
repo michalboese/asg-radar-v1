@@ -1,31 +1,20 @@
-import type { Organizer } from './organizers'
-
+import { useCollection, useFirestore } from 'vuefire'
+import { collection } from 'firebase/firestore'
+import type { Timestamp } from 'firebase-admin/firestore'
 export interface Event {
     id: string,
-    slug: string,
-    organizer: Organizer,
+    organizerId: string,
     title: string,
     intro: string,
-}
-
-export interface EventDetails {
-    id: string,
-    slug: string,
-    organizer: Organizer,
-    title: string,
     description: string,
-    date: string,   
+    date: Timestamp
 }
 
-export const getEventsUrl = () => (
-    'http://localhost:3001/events'
-)
+export const getEvents = () => {
+  const eventsRef = collection(useFirestore(), 'events')
+  const events = useCollection<Event>(eventsRef)
 
-export const getEventDetailsUrl = (eventSlug: string) => (
-    `http://localhost:3001/eventDetails/${eventSlug}?_expand=organizer`
-)
-
-export const getEvents = async () => {
-    const res = await fetch(getEventsUrl())
-    return res.json()
+  console.log('events')
+  console.log(events.data.value)
+  return events.data
 }

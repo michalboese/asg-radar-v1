@@ -1,0 +1,227 @@
+[
+    {
+        "id": "airsoft-battle-2024",
+        "slug": "airsoft-battle-2024",
+        "organizerId": "tactical-masters",
+        "title": "Airsoft Battle 2024",
+        "description": "Dołącz do najbardziej ekscytującej bitwy roku!\n\nWalcz w drużynach w malowniczym leśnym terenie.",
+        "date": "2024-09-10",
+        "intro": "Ekscytujące starcie w terenie leśnym!"
+      },
+      {
+        "id": "desert-siege",
+        "slug": "desert-siege",
+        "organizerId": "tactical-masters",
+        "title": "Desert Siege",
+        "description": "Stań się mistrzem pustyni w tej wyjątkowej bitwie.\n\nTaktyka i współpraca kluczem do zwycięstwa.",
+        "date": "2024-06-15",
+        "intro": "Zdominuj pustynny teren w tej ekscytującej bitwie."
+      },
+      {
+        "id": "urban-warfare",
+        "slug": "urban-warfare",
+        "organizerId": "tactical-masters",
+        "title": "Urban Warfare",
+        "description": "Ekscytujące starcia w realistycznym środowisku miejskim.\n\nIdealne dla miłośników taktyki.",
+        "date": "2024-08-05",
+        "intro": "Ekscytujące starcia w realistycznym środowisku miejskim."
+      },
+      {
+        "id": "jungle-ambush",
+        "slug": "jungle-ambush",
+        "organizerId": "tactical-masters",
+        "title": "Jungle Ambush",
+        "description": "Ukryj się w gęstej dżungli i przygotuj zasadzkę na przeciwników.\n\nNie przegap tej strategicznej rozgrywki!",
+        "date": "2024-07-20",
+        "intro": "Ukryj się w gęstej dżungli i przygotuj zasadzkę na przeciwników."
+      },
+      {
+        "id": "mountain-conquest",
+        "slug": "mountain-conquest",
+        "organizerId": "tactical-masters",
+        "title": "Mountain Conquest",
+        "description": "Walka na wysokości! Obejmij kontrolę nad strategicznymi punktami na górskim szlaku.",
+        "date": "2024-10-12",
+        "intro": "Walka na wysokości! Obejmij kontrolę nad strategicznymi punktami na górskim szlaku."
+      },
+      {
+        "id": "river-crossing",
+        "slug": "river-crossing",
+        "organizerId": "tactical-masters",
+        "title": "River Crossing",
+        "description": "Przeprawa przez rzekę z zachowaniem pełnej taktyki.\n\nDrużyny będą musiały współpracować, by osiągnąć cel.",
+        "date": "2024-11-03",
+        "intro": "Przeprawa przez rzekę z zachowaniem pełnej taktyki."
+      },
+      {
+        "id": "urban-skirmish",
+        "slug": "urban-skirmish",
+        "organizerId": "urban-tactics",
+        "title": "Urban Skirmish",
+        "description": "Miejska walka na najwyższym poziomie.\n\nWykorzystaj swoje umiejętności taktyczne w ciasnych przestrzeniach.",
+        "date": "2024-05-22",
+        "intro": "Miejska walka na najwyższym poziomie. Użyj swoich umiejętności w ciasnych przestrzeniach."
+      },
+      {
+        "id": "factory-assault",
+        "slug": "factory-assault",
+        "organizerId": "urban-tactics",
+        "title": "Factory Assault",
+        "description": "Przełam obronę w starym zakładzie przemysłowym.\n\nCiasne przestrzenie i dynamiczne starcia gwarantowane.",
+        "date": "2024-06-10",
+        "intro": "Przełam obronę w starym zakładzie przemysłowym!"
+      },
+      {
+        "id": "metro-mayhem",
+        "slug": "metro-mayhem",
+        "organizerId": "urban-tactics",
+        "title": "Metro Mayhem",
+        "description": "Zanurz się w walkę w opuszczonej stacji metra.\n\nUważaj na ciasne korytarze i strategiczne pułapki.",
+        "date": "2024-07-08",
+        "intro": "Starcie w opuszczonej stacji metra pełnej pułapek."
+      },
+      {
+        "id": "downtown-clash",
+        "slug": "downtown-clash",
+        "organizerId": "urban-tactics",
+        "title": "Downtown Clash",
+        "description": "Bitwa o centrum miasta.\n\nPrzejmij kluczowe punkty w samym sercu urbanistycznego chaosu.",
+        "date": "2024-08-15",
+        "intro": "Bitwa o kontrolę nad centrum miasta."
+      },
+      {
+        "id": "warehouse-raid",
+        "slug": "warehouse-raid",
+        "organizerId": "urban-tactics",
+        "title": "Warehouse Raid",
+        "description": "Zdominuj przeciwników w zrujnowanym magazynie.\n\nWalka o zasoby w dynamicznych drużynach.",
+        "date": "2024-09-25",
+        "intro": "Dynamiczne starcia o zasoby w starym magazynie."
+      },
+      {
+        "id": "suburban-standoff",
+        "slug": "suburban-standoff",
+        "organizerId": "urban-tactics",
+        "title": "Suburban Standoff",
+        "description": "Taktyczna potyczka na przedmieściach.\n\nPrzejmij kontrolę nad strategicznymi budynkami.",
+        "date": "2024-10-12",
+        "intro": "Taktyczna potyczka na przedmieściach."
+      },
+      {
+        "id": "mountain-rescue",
+        "slug": "mountain-rescue",
+        "organizerId": "extreme-adventures",
+        "title": "Mountain Rescue",
+        "description": "Zostań bohaterem w scenariuszu akcji ratunkowej na stromych zboczach gór.\n\nUważaj na dynamicznie zmieniające się warunki pogodowe.",
+        "date": "2024-04-15",
+        "intro": "Scenariusz akcji ratunkowej w trudnym, górskim terenie."
+      },
+      {
+        "id": "forest-expedition",
+        "slug": "forest-expedition",
+        "organizerId": "extreme-adventures",
+        "title": "Forest Expedition",
+        "description": "Przetrwaj głęboko w lesie i walcz o swoje przetrwanie.\n\nUważaj na ukryte zasadzki i niespodziewane wyzwania.",
+        "date": "2024-05-10",
+        "intro": "Przetrwanie w głębokim lesie z licznymi wyzwaniami i niespodziankami."
+      },
+      {
+        "id": "desert-survival",
+        "slug": "desert-survival",
+        "organizerId": "extreme-adventures",
+        "title": "Desert Survival",
+        "description": "Sprawdź swoje umiejętności przetrwania w ekstremalnych warunkach pustynnych.\n\nStrategia i zarządzanie zasobami są kluczem do sukcesu.",
+        "date": "2024-06-20",
+        "intro": "Przeżycie na pustyni z ograniczonymi zasobami."
+      },
+      {
+        "id": "canyon-conquest",
+        "slug": "canyon-conquest",
+        "organizerId": "extreme-adventures",
+        "title": "Canyon Conquest",
+        "description": "Zdominuj rywali w wąwozie pełnym niespodzianek.\n\nSkupienie i precyzja zapewnią Ci zwycięstwo.",
+        "date": "2024-07-18",
+        "intro": "Walka o dominację w strategicznym wąwozie."
+      },
+      {
+        "id": "river-ambush",
+        "slug": "river-ambush",
+        "organizerId": "adventure-hunters",
+        "title": "River Ambush",
+        "description": "Przygotuj zasadzkę nad brzegiem rzeki i zaskocz przeciwników.\n\nWykorzystaj naturalne przeszkody na swoją korzyść.",
+        "date": "2024-03-18",
+        "intro": "Zasadzka nad rzeką z dynamicznymi starciami w terenie."
+      },
+      {
+        "id": "hidden-valley",
+        "slug": "hidden-valley",
+        "organizerId": "adventure-hunters",
+        "title": "Hidden Valley",
+        "description": "Odkryj tajemniczą dolinę i przejmij kontrolę nad jej strategicznymi punktami.\n\nWalka pełna niespodziewanych zwrotów akcji.",
+        "date": "2024-04-25",
+        "intro": "Przejmij kontrolę nad tajemniczą doliną pełną strategicznych punktów."
+      },
+      {
+        "id": "fortress-defense",
+        "slug": "fortress-defense",
+        "organizerId": "battle-elite",
+        "title": "Fortress Defense",
+        "description": "Obroń starą fortecę przed nacierającymi siłami wroga.\n\nWykorzystaj swoje umiejętności strategiczne, aby odeprzeć atak.",
+        "date": "2024-05-05",
+        "intro": "Obrona starożytnej fortecy przed siłami wroga. Taktyka kluczem do sukcesu."
+      },
+      {
+        "id": "night-ops",
+        "slug": "night-ops",
+        "organizerId": "battle-elite",
+        "title": "Night Ops",
+        "description": "Wykonaj misję w ciemności, używając sprzętu noktowizyjnego i cichej strategii.\n\nIdealne dla fanów skradania i precyzji.",
+        "date": "2024-06-18",
+        "intro": "Misja nocna z użyciem zaawansowanego sprzętu taktycznego."
+      },
+      {
+        "id": "bridge-assault",
+        "slug": "bridge-assault",
+        "organizerId": "tactical-legends",
+        "title": "Bridge Assault",
+        "description": "Przejmij kontrolę nad strategicznym mostem w dynamicznej bitwie.\n\nCzas i precyzja mają kluczowe znaczenie.",
+        "date": "2024-03-22",
+        "intro": "Dynamiczna bitwa o kontrolę nad strategicznym mostem."
+      },
+      {
+        "id": "hidden-bunker",
+        "slug": "hidden-bunker",
+        "organizerId": "tactical-legends",
+        "title": "Hidden Bunker",
+        "description": "Zlokalizuj i zabezpiecz ukryty bunkier pełen zasobów.\n\nWspółpraca drużynowa jest kluczem do zwycięstwa.",
+        "date": "2024-04-30",
+        "intro": "Zabezpiecz ukryty bunkier pełen cennych zasobów."
+      },
+      {
+        "id": "sniper-challenge",
+        "slug": "sniper-challenge",
+        "organizerId": "precision-warriors",
+        "title": "Sniper Challenge",
+        "description": "Sprawdź swoją precyzję i cierpliwość jako snajper.\n\nTwoim celem jest eliminacja kluczowych celów z dużej odległości.",
+        "date": "2024-05-12",
+        "intro": "Zostań mistrzem precyzyjnego strzału w tej snajperskiej rywalizacji."
+      },
+      {
+        "id": "urban-infiltration",
+        "slug": "urban-infiltration",
+        "organizerId": "precision-warriors",
+        "title": "Urban Infiltration",
+        "description": "Przeniknij do wrogiego terenu w środowisku miejskim.\n\nWspółpraca zespołowa i ciche podejście są kluczem do sukcesu.",
+        "date": "2024-06-08",
+        "intro": "Misja w środowisku miejskim wymagająca cichego podejścia i zespołowej współpracy."
+      },
+      {
+        "id": "forest-recon",
+        "slug": "forest-recon",
+        "organizerId": "precision-warriors",
+        "title": "Forest Recon",
+        "description": "Misja zwiadowcza w głębokim lesie.\n\nZbierz informacje, unikając wykrycia przez przeciwników.",
+        "date": "2024-07-20",
+        "intro": "Zwiad w lesie z naciskiem na uniknięcie wykrycia i zebranie informacji."
+      }
+  ]

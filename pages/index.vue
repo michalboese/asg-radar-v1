@@ -1,35 +1,30 @@
 <script setup lang="ts">
-import type { Event } from "@/data/events";
-import type { Filter } from "@/data/filters";
-import { getEventsUrl } from "@/data/events";
+import type { Event } from '@/data/events'
+import type { Filter } from '@/data/filters'
+import { getEvents } from '@/data/events'
 
-const events = ref<Event[] | null>(null);
+const events = getEvents()
 
-(async () => {
-  const { data } = await useFetch<Event[]>(getEventsUrl());
-  events.value = data.value;
-})();
-
-const filters = ref<Filter>({});
+const filters = ref<Filter>({})
 
 const filteredEvents = computed(() =>
   events.value?.filter((event: Event) => {
     const matchesTitle = filters.value.title
       ? event.title.toLowerCase().includes(filters.value.title.toLowerCase())
-      : true;
+      : true
     const matchesOrganizer = filters.value.organizerName
-      ? event.organizer.name
-          .toLowerCase()
-          .includes(filters.value.organizerName.toLowerCase())
-      : true;
+      ? event.organizerId
+        .toLowerCase()
+        .includes(filters.value.organizerName.toLowerCase())
+      : true
 
-    return matchesTitle && matchesOrganizer;
+    return matchesTitle && matchesOrganizer
   })
-);
+)
 
 const handleFilterChange = (newFilters: Filter) => {
-  filters.value = newFilters;
-};
+  filters.value = newFilters
+}
 </script>
 
 <template>
