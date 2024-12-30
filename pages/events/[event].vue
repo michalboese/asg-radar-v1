@@ -1,36 +1,49 @@
 <script setup lang="ts">
-import type { EventDetails } from '@/data/events'
-import { getEventDetailsUrl } from '@/data/events'
+import type { Event } from '@/stores/eventsStore'
+import { useEventsStore } from '@/stores/eventsStore'
+
+const eventsStore = useEventsStore();
+await eventsStore.fetchEvents();
+
+const organizersStore = useOrganizersStore();
+await organizersStore.fetchOrganizers();
 
 definePageMeta({
   layout: 'breadcrumb',
 })
 
-const eventSlut = useParam('event')
+const eventSlug = useParam('event')
 
-const { data: event } = await useFetch<EventDetails>(getEventDetailsUrl(eventSlut))
+const event = computed(() =>
+eventsStore.events.find((o) => o.id === eventSlug) || {} as Event
+);
+
+const organizer = computed(() =>
+organizersStore.organizers.find((o) => o.slug === event.value.organizerId) || {} as Organizer
+);
 
 const organizerSlug = useOrganizerState()
 
 if (event.value) {
     organizerSlug.value = {
-        name: event.value.organizer.name,
-        slug: event.value.organizer.slug,
+      name: organizer.value.name,
+      slug: organizer.value.slug,
     }
 }
 </script>
 
 <template>
     <main>
-      <template v-if="event">
+      <div v-if="organizersStore.isLoading" class="loading-spinner"></div>
+      <template v-else>
         <h1>
           {{ event.title }}
-          <OrganizerLink :organizer="event.organizer" />
+          <OrganizerLink :organizer="organizer" />
         </h1>
         <RenderMarkdown :source="event.description" />
         <br>  
         <br>  
-        <h2>{{ event.date }}</h2>
+        <h2>{{ event.date.toDate().toLocaleDateString() }}</h2>
       </template>
     </main>
   </template>

@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import type { Event } from '@/data/events'
+import type { Event } from '@/stores/eventsStore'
 import type { Filter } from '@/data/filters'
-import { getEvents } from '@/data/events'
+import type { Organizer } from '@/stores/organizersStore'
+import { useEventsStore } from '@/stores/eventsStore';
+import { useOrganizersStore } from '@/stores/organizersStore';
 
-const events = getEvents()
+const eventsStore = useEventsStore();
+await eventsStore.fetchEvents();
+
+const organizersStore = useOrganizersStore();
+await organizersStore.fetchOrganizers();
 
 const filters = ref<Filter>({})
 
 const filteredEvents = computed(() =>
-  events.value?.filter((event: Event) => {
+  eventsStore.events.filter((event: Event) => {
     const matchesTitle = filters.value.title
       ? event.title.toLowerCase().includes(filters.value.title.toLowerCase())
       : true
@@ -30,7 +36,8 @@ const handleFilterChange = (newFilters: Filter) => {
 <template>
   <main>
     <h1>ASG Radar</h1>
-    <div class="grid">
+    <div v-if="organizersStore.isLoading" class="loading-spinner"></div>
+    <div v-else class="grid">
       <div class="filters">
         <MainFilters @filter-change="handleFilterChange" />
       </div>
@@ -39,6 +46,7 @@ const handleFilterChange = (newFilters: Filter) => {
           v-for="event in filteredEvents"
           :key="event.id"
           :event="event"
+          :organizer="organizersStore.organizers.find((o) => o.slug === event.organizerId) || {} as Organizer"
         />
       </div>
       <div></div>

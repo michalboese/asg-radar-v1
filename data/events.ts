@@ -1,4 +1,3 @@
-import { useCollection, useFirestore } from 'vuefire'
 import { collection } from 'firebase/firestore'
 import type { Timestamp } from 'firebase-admin/firestore'
 export interface Event {

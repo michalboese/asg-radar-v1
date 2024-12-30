@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Organizer } from '@/data/organizers'
+import type { Organizer } from '@/stores/organizersStore'
 
 const { organizer } = defineProps<{ organizer: Organizer }>()
 </script>

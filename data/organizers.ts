@@ -1,5 +1,4 @@
-import type { Event } from './events'
-
+import { collection } from 'firebase/firestore'
 export interface Organizer {
     id: string,
     slug: string,
@@ -7,17 +6,11 @@ export interface Organizer {
     count: number
 }
 
-export interface OrganizerDetails {
-    id: string,
-    slug: string,
-    name: string,
-    events: Event[]
+export const getOrganizers = () => {
+  const organizersRef = collection(useFirestore(), 'organizers')
+  const organizers = useCollection<Organizer>(organizersRef)
+
+  console.log('organizers')
+  console.log(organizers.data.value)
+  return organizers.data
 }
-
-export const getOrganizersUrl = () => (
-    'http://localhost:3001/organizers'
-  )
-
-export const getOrganizerDetailsUrl = (organizerSlug: string) => (
-    `http://localhost:3001/organizers/${organizerSlug}?_embed=events`
-)

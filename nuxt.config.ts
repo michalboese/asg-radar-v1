@@ -2,21 +2,21 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  modules: ['nuxt-vuefire', '@vueuse/nuxt', '@nuxt/ui'],
+  modules: ['nuxt-vuefire', '@vueuse/nuxt', '@nuxt/ui', '@pinia/nuxt'],
   vuefire: {
     auth: true, // (opcjonalnie) włącz zarządzanie uwierzytelnianiem Firebase
     config: {
-      apiKey: 'AIzaSyDbJnVqFjYgzJ1VM-HOYNSfh83Ar9WA868',
-      authDomain: 'asg-radar-v1.firebaseapp.com',
-      projectId: 'asg-radar-v1',
-      storageBucket: 'asg-radar-v1.firebasestorage.app',
-      messagingSenderId: '497911779357',
-      appId: '1:497911779357:web:78d0886f387e5bc16636f4',
-      measurementId: 'G-XSQG58KZ14'
+      apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+      authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
+      projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+      storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.VUE_APP_FIREBASE_APP_ID,
+      measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID
     }
   },
   ui: {
-    primary: 'green',
+    primary: 'neutral',
     gray: 'zinc'
   }
 })

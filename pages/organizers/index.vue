@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import type { Organizer } from "@/data/organizers";
-import { getOrganizersUrl } from "@/data/organizers";
+import type { Organizer } from "@/stores/organizersStore";
+import { useOrganizersStore } from '@/stores/organizersStore';
 
-const { data: organizers } = await useFetch<Organizer[]>(getOrganizersUrl());
+const organizersStore = useOrganizersStore();
+await organizersStore.fetchOrganizers();
 
 const organizerName = ref<string | null>(null);
 
 const filteredOrganizers = computed(() =>
-  organizers.value?.filter((organizer: Organizer) => {
+  organizersStore.organizers.filter((organizer) => {
     const matchesName = organizerName.value
       ? organizer.name.toLowerCase().includes(organizerName.value.toLowerCase())
       : true;
@@ -18,7 +19,8 @@ const filteredOrganizers = computed(() =>
 </script>
 
 <template>
-  <main>
+  <div v-if="organizersStore.isLoading" class="loading-spinner"></div>
+  <main v-else>
     <h1>
       Wyszukaj organizatora:
       <input

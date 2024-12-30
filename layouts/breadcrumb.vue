@@ -1,15 +1,71 @@
-<script setup lang="ts">
-const organizerState = useOrganizerState();
+<script setup>
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+const user = ref(null);
+
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    const auth = getAuth(); // Pobierz instancję Firebase Auth
+    onAuthStateChanged(auth, (authUser) => {
+      user.value = authUser ? authUser.displayName || authUser.email : null;
+    });
+  }
+});
+
+const handleLogout = async () => {
+  try {
+    const auth = getAuth(); // Pobierz instancję Firebase Auth
+    await signOut(auth); // Wyloguj użytkownika
+    user.value = null;
+    console.log('Wylogowano pomyślnie');
+  } catch (error) {
+    console.error('Błąd podczas wylogowywania:', error);
+  }
+};
+
+  const organizerState = useOrganizerState();
 </script>
 
 <template>
+  <nav class="nav">
+    <NuxtLink class="link" :class="{ current: $route.path === '/' }" to="/">
+      Home
+    </NuxtLink>
+    
+    <NuxtLink
+    class="link"
+    :class="{ current: $route.path === '/organizers' }"
+    to="/organizers"
+    >
+    Organizatorzy
+  </NuxtLink>
+  
+  <NuxtLink
+    class="link"
+    :class="{ current: $route.path === '/profile/1' }"
+    to="/profile/1"
+    >
+    Profil
+  </NuxtLink>
+  <ClientOnly>
+    <div class="link user" v-if="user">
+      <div class="user">
+        <span>Witaj, {{ user }}!</span>
+      </div>
+      <div class="link"><button @click="handleLogout">Wyloguj</button></div>
+    </div>
+    <div class="link user" v-else>
+      <div class="link"><a href="/login">Zaloguj się</a></div>
+      <div class="link"><a href="/register">Zarejestruj się</a></div> 
+    </div>
+  </ClientOnly>
+  </nav>
     <div class="layout">
       <nav class="breadcrumb">
         <NuxtLink
           class="link"
           to="/"
         >
-          All
+          Home
         </NuxtLink>
         ➤
         <NuxtLink
@@ -35,6 +91,42 @@ const organizerState = useOrganizerState();
 <style scoped lang="scss">
 @use '@/assets/styles/colors.scss';
 
+.nav {
+  margin: 20px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.nav .link {
+  color: colors.$green-medium;
+  display: inline-block;
+  font-size: 14pt;
+  margin-right: 20px;
+}
+
+.nav .link:hover {
+  color: colors.$green-light;
+}
+
+.nav .user {
+  color: colors.$green-medium;
+  display: inline-block;
+  font-size: 14pt;
+  margin-right: 20px;
+  cursor: default;
+}
+
+.nav .user:hover {
+  color: colors.$green-light;
+}
+
+.nav .link.current {
+  color: colors.$green-light;
+  text-decoration: underline;
+  pointer-events: none;
+}
+
 .layout {
   width: 620px;
   margin: 0px auto 50px;
@@ -58,5 +150,10 @@ const organizerState = useOrganizerState();
 .breadcrumb .link:hover {
   color: colors.$green-light;
   cursor: pointer;
+}
+
+.user {
+  margin-right: 0 !important;
+  float: right;
 }
 </style>

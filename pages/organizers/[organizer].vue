@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import type { OrganizerDetails } from '@/data/organizers';
-import { getOrganizerDetailsUrl } from '@/data/organizers';
-import { useOrganizerState } from '~/composables/useOrganizerState';
+import type { Organizer } from '@/stores/organizersStore';
+import { useEventsStore } from '@/stores/eventsStore';
+import { useOrganizersStore } from '@/stores/organizersStore';
+
+const eventsStore = useEventsStore();
+await eventsStore.fetchEvents();
+
+const organizersStore = useOrganizersStore();
+await organizersStore.fetchOrganizers();
 
 definePageMeta({
   layout: 'breadcrumb'
@@ -9,7 +15,9 @@ definePageMeta({
 
 const organizerSlug = useParam('organizer');
 
-const { data: organizer } = await useFetch<OrganizerDetails>(getOrganizerDetailsUrl(organizerSlug));
+const organizer = computed(() =>
+  organizersStore.organizers.find((o) => o.slug === organizerSlug) || {} as Organizer
+);
 
 const organizerState = useOrganizerState();
 
@@ -23,13 +31,15 @@ if (organizer.value) {
 
 <template>
     <main>
-      <template v-if="organizer">
+      <div v-if="organizersStore.isLoading" class="loading-spinner"></div>
+      <template v-else>
         <h1>Organizator: {{ organizer.name }}</h1>
         <div>
           <EventCard
-            v-for="event in organizer.events"
+            v-for="event in eventsStore.events.filter((e) => e.organizerId === organizer.slug)"
             :key="event.id"
             :event="event"
+            :organizer="organizer"
           />
         </div>
       </template>
