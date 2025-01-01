@@ -14,9 +14,5 @@ export default defineNuxtConfig({
       appId: process.env.VUE_APP_FIREBASE_APP_ID,
       measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID
     }
-  },
-  ui: {
-    primary: 'neutral',
-    gray: 'zinc'
   }
 })

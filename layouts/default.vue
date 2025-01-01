@@ -54,9 +54,9 @@ const handleLogout = async () => {
         </div>
         <div class="link user" v-else>
           <div class="link"><a href="/login">Zaloguj się</a></div>
-          <div class="link"><a href="/register">Zarejestruj się</a></div> 
         </div>
       </ClientOnly>
+      <ColorMode />
     </nav>
     <slot />
   </div>
