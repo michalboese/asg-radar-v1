@@ -40,12 +40,21 @@ const handleLogout = async () => {
   </NuxtLink>
   
   <NuxtLink
-    class="link"
-    :class="{ current: $route.path === '/profile/1' }"
-    to="/profile/1"
-    >
-    Profil
-  </NuxtLink>
+        class="link"
+        :class="{ current: $route.path === '/events/addEvent' }"
+        to="/events/addEvent"
+      >
+        Nowe wydarzenie
+      </NuxtLink>
+
+      <NuxtLink
+        class="link"
+        :class="{ current: $route.path === '/events/myEvents' }"
+        to="/events/myEvents"
+      >
+        Moje wydarzenia
+      </NuxtLink>
+      <ColorMode />
   <ClientOnly>
     <div class="link user" v-if="user">
       <div class="user">
@@ -55,7 +64,6 @@ const handleLogout = async () => {
     </div>
     <div class="link user" v-else>
       <div class="link"><a href="/login">Zaloguj się</a></div>
-      <div class="link"><a href="/register">Zarejestruj się</a></div> 
     </div>
   </ClientOnly>
   </nav>

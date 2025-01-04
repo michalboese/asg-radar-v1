@@ -4,6 +4,7 @@ export interface Organizer {
   id: string;
   slug: string;
   name: string;
+  email: string;
   count: number;
 }
 
@@ -28,6 +29,11 @@ export const useOrganizersStore = defineStore('organizers', {
       } finally {
         this.isLoading = false;
       }
+    },
+
+    async findOrganizerByEmail(email: string): Promise<Organizer | null> {
+      const organizer = this.organizers.find((org) => org.email === email);
+      return organizer || null;
     },
   },
 

@@ -1,62 +1,60 @@
-<script setup>
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-const user = ref(null);
+<script setup lang="ts">
+import { useAuthUser } from '@/composables/useAuthUser';
+import { navigation } from '@/utils/navigation';
+import { getAuth, signOut } from 'firebase/auth';
 
-onMounted(() => {
-  if (typeof window !== 'undefined') {
-    const auth = getAuth(); // Pobierz instancję Firebase Auth
-    onAuthStateChanged(auth, (authUser) => {
-      user.value = authUser ? authUser.displayName || authUser.email : null;
-    });
-  }
+const { user, role, fetchUserRole } = useAuthUser();
+const auth = getAuth();
+
+// Pobranie roli użytkownika na montowanie komponentu
+onMounted(async () => {
+  await fetchUserRole();
 });
 
+// Wylogowanie użytkownika
 const handleLogout = async () => {
   try {
-    const auth = getAuth(); // Pobierz instancję Firebase Auth
-    await signOut(auth); // Wyloguj użytkownika
-    user.value = null;
+    await signOut(auth);
     console.log('Wylogowano pomyślnie');
   } catch (error) {
     console.error('Błąd podczas wylogowywania:', error);
   }
 };
+
+// Filtruj elementy nawigacji na podstawie roli użytkownika
+const filteredNavigation = computed(() =>
+  navigation.filter((item) => role.value && item.roles.includes(role.value))
+);
 </script>
 
 <template>
   <div class="layout">
     <nav class="nav">
-      <NuxtLink class="link" :class="{ current: $route.path === '/' }" to="/">
-        Home
-      </NuxtLink>
+      <ul>
+        <!-- Dynamiczne generowanie elementów nawigacji -->
+        <li v-for="item in filteredNavigation" :key="item.path">
+          <NuxtLink
+            class="link"
+            :class="{ current: $route.path === item.path }"
+            :to="item.path"
+          >
+            {{ item.label }}
+          </NuxtLink>
+        </li>
+      </ul>
 
-      <NuxtLink
-        class="link"
-        :class="{ current: $route.path === '/organizers' }"
-        to="/organizers"
-      >
-        Organizatorzy
-      </NuxtLink>
-
-      <NuxtLink
-        class="link"
-        :class="{ current: $route.path === '/profile/1' }"
-        to="/profile/1"
-      >
-        Profil
-      </NuxtLink>
+      <!-- Informacje o użytkowniku -->
       <ClientOnly>
-        <div class="link user" v-if="user">
-          <div class="user">
-            <span>Witaj, {{ user }}!</span>
+        <div class="user-section">
+          <div v-if="user" >
+            <span class="mr-5">Witaj, {{ user.displayName || user.email || 'Użytkowniku' }}!</span>
+            <button @click="handleLogout" class="link">Wyloguj</button>
           </div>
-          <div class="link"><button @click="handleLogout">Wyloguj</button></div>
-        </div>
-        <div class="link user" v-else>
-          <div class="link"><a href="/login">Zaloguj się</a></div>
+          <div v-else>
+            <NuxtLink class="link" to="/login">Zaloguj się</NuxtLink>
+          </div>
         </div>
       </ClientOnly>
-      <ColorMode />
     </nav>
     <slot />
   </div>
@@ -72,29 +70,26 @@ const handleLogout = async () => {
 .nav {
   margin-top: 10px;
   margin-bottom: 30px;
-  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .nav .link {
   color: colors.$green-medium;
-  display: inline-block;
   font-size: 14pt;
-  margin-right: 20px;
+  text-decoration: none;
 }
 
 .nav .link:hover {
-  color: colors.$green-light;
-}
-
-.nav .user {
-  color: colors.$green-medium;
-  display: inline-block;
-  font-size: 14pt;
-  margin-right: 20px;
-  cursor: default;
-}
-
-.nav .user:hover {
   color: colors.$green-light;
 }
 
@@ -104,9 +99,24 @@ const handleLogout = async () => {
   pointer-events: none;
 }
 
-.user {
-  margin-right: 0 !important;
-  float: right;
+.user-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
+.user-section span {
+  color: colors.$green-medium;
+  font-size: 14pt;
+}
+
+.user-section .link {
+  color: colors.$green-medium;
+  cursor: pointer;
+  font-size: 14pt;
+}
+
+.user-section .link:hover {
+  color: colors.$green-light;
+}
 </style>

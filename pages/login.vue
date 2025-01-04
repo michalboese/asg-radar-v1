@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { Timestamp } from 'firebase/firestore';
 import { object, string, ref as yupRef, type InferType } from 'yup'; // Yup
 import type { FormSubmitEvent } from '#ui/types'; // Nuxt UI Typy
+import { useUsersStore } from '@/stores/usersStore';
+
 const auth = getAuth();
 const errorMessage = ref('');
 
@@ -38,6 +41,9 @@ const registerSchema = object({
   confirmPassword: string()
     .oneOf([yupRef('password')], 'Hasła muszą być identyczne')
     .required('Powtórzenie hasła jest wymagane'),
+  firstName: string().required('Imię jest wymagane'),
+  lastName: string().required('Nazwisko jest wymagane'),
+  birthDate: string().required('Data urodzenia jest wymagana'),
 });
 
 const resetPasswordSchema = object({
@@ -60,6 +66,9 @@ const registerForm = reactive<RegisterSchema>({
   email: '',
   password: '',
   confirmPassword: '',
+  firstName: '',
+  lastName: '',
+  birthDate: '',
 });
 
 const resetPasswordForm = reactive<ResetPasswordSchema>({
@@ -81,14 +90,27 @@ const handleLogin = async (data: LoginSchema) => {
 };
 
 const handleRegister = async (data: RegisterSchema) => {
-  console.log('Próba rejestracji z:', data.email, data.password);
+  const usersStore = useUsersStore();
+
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
     const user = userCredential.user;
-    console.log('Zarejestrowano użytkownika:', user);
+
     await updateProfile(user, {
       displayName: data.nickName,
     });
+
+    const newUser = {
+      email: data.email,
+      nickname: data.nickName,
+      firstName: data.firstName || '',
+      lastName: data.lastName || '',
+      birthDate: data.birthDate ? Timestamp.fromDate(new Date(data.birthDate)) : null,
+      role: 'user' as 'user' | 'organizer' | 'admin', // Poprawienie typu role
+    };
+
+    await usersStore.addUser(newUser, user.uid);
+
     navigateTo('/');
   } catch (error) {
     const firebaseErrorCode = (error as any).code;
@@ -147,11 +169,20 @@ async function onSubmit(event: FormSubmitEvent<any> & { formKey: string }) {
             </div>
 
             <div v-else-if="item.key === 'register'" class="space-y-3">
-              <UFormGroup label="Nick" name="nickName">
+              <UFormGroup label="Ksywka" name="nickName">
                 <UInput v-model="registerForm.nickName" />
               </UFormGroup>
               <UFormGroup label="Email" name="email">
                 <UInput v-model="registerForm.email" type="email" />
+              </UFormGroup>
+              <UFormGroup label="Imię" name="firstName">
+                <UInput v-model="registerForm.firstName" />
+              </UFormGroup>
+              <UFormGroup label="Nazwisko" name="lastName">
+                <UInput v-model="registerForm.lastName" />
+              </UFormGroup>
+              <UFormGroup label="Data urodzenia" name="birthDate">
+                <UInput v-model="registerForm.birthDate" type="date" />
               </UFormGroup>
               <UFormGroup label="Hasło" name="password">
                 <UInput v-model="registerForm.password" type="password" />

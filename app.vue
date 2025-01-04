@@ -1,7 +1,5 @@
 <script setup lang="ts">
 const user = useCurrentUser()
-console.log('user')
-console.log(user)
 
 </script>
 
