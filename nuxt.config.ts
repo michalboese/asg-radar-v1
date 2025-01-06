@@ -2,7 +2,8 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  modules: ['nuxt-vuefire', '@vueuse/nuxt', '@nuxt/ui', '@pinia/nuxt'],
+  extends: ['@nuxt/ui-pro'],
+  modules: ['nuxt-vuefire', '@vueuse/nuxt', '@nuxt/ui', '@pinia/nuxt', '@nuxtjs/leaflet'],
   vuefire: {
     auth: true, // (opcjonalnie) włącz zarządzanie uwierzytelnianiem Firebase
     config: {
@@ -14,5 +15,8 @@ export default defineNuxtConfig({
       appId: process.env.VUE_APP_FIREBASE_APP_ID,
       measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID
     }
-  }
+  },
+  colorMode: {
+    preference: 'dark'
+  },
 })

@@ -1,27 +1,22 @@
 export const navigation = [
     {
-      label: 'Home',
-      path: '/',
-      roles: ['user', 'organizer', 'admin'], // Dostępne dla wszystkich
-    },
-    {
         label: 'Organizatorzy',
-        path: '/organizers',
-        roles: ['user', 'organizer', 'admin'], // Dostępne dla wszystkich
+        to: '/organizers',
+        roles: ['user', 'organizer', 'admin', 'niezalogowany', null], // Dostępne dla wszystkich
     },
     {
         label: 'Moje wydarzenia',
-        path: '/events/myEvents',
+        to: '/events/myEvents',
         roles: ['user', 'organizer', 'admin'], // Dostępne dla wszystkich
     },
     {
       label: 'Nowe wydarzenie',
-      path: '/events/addEvent',
+      to: '/events/addEvent',
       roles: ['organizer'], // Tylko dla organizatorów
     },
     {
       label: 'Panel administratora',
-      path: '/admin',
+      to: '/admin',
       roles: ['admin'], // Tylko dla administratorów
     },
   ];

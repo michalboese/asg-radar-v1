@@ -25,7 +25,7 @@ const items = ref([
 ]);
 
 definePageMeta({
-  layout: 'login',
+  layout: 'default',
 });
 
 // Schematy walidacji z Yup
@@ -139,11 +139,12 @@ async function onSubmit(event: FormSubmitEvent<any> & { formKey: string }) {
 </script>
 
 <template>
+  <div class="layout">
   <ClientOnly>
     <template #fallback>
       <div class="loading-spinner"></div>
     </template>
-    <UTabs :items="items" class="w-full">
+    <UTabs :items="items" class="w-full mt-10">
       <template #item="{ item }">
         <UCard>
           <template #header>
@@ -207,15 +208,15 @@ async function onSubmit(event: FormSubmitEvent<any> & { formKey: string }) {
       </template>
     </UTabs>
   </ClientOnly>
+</div>
 </template>
 
 <style scoped>
-.login-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+
+.layout {
+  width: 520px;
+  height: 75vh;
+  margin: 0px auto 50px;
 }
 
 label {

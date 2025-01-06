@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useAuthUser } from '@/composables/useAuthUser';
 import { navigation } from '@/utils/navigation';
 import { getAuth, signOut } from 'firebase/auth';
+
 
 const { user, role, fetchUserRole } = useAuthUser();
 const auth = getAuth();
@@ -9,6 +9,7 @@ const auth = getAuth();
 // Pobranie roli użytkownika na montowanie komponentu
 onMounted(async () => {
   await fetchUserRole();
+  console.log('Rola użytkownika:', role.value);
 });
 
 // Wylogowanie użytkownika
@@ -25,37 +26,39 @@ const handleLogout = async () => {
 const filteredNavigation = computed(() =>
   navigation.filter((item) => role.value && item.roles.includes(role.value))
 );
+
 </script>
 
 <template>
-  <div class="layout">
-    <nav class="nav">
-      <ul>
-        <!-- Dynamiczne generowanie elementów nawigacji -->
-        <li v-for="item in filteredNavigation" :key="item.path">
-          <NuxtLink
-            class="link"
-            :class="{ current: $route.path === item.path }"
-            :to="item.path"
-          >
-            {{ item.label }}
-          </NuxtLink>
-        </li>
-      </ul>
+  
+  <ClientOnly>
 
-      <!-- Informacje o użytkowniku -->
-      <ClientOnly>
-        <div class="user-section">
-          <div v-if="user" >
-            <span class="mr-5">Witaj, {{ user.displayName || user.email || 'Użytkowniku' }}!</span>
-            <button @click="handleLogout" class="link">Wyloguj</button>
-          </div>
-          <div v-else>
-            <NuxtLink class="link" to="/login">Zaloguj się</NuxtLink>
-          </div>
+    <UHeader>
+      <template #logo>
+        <UButton to="/" size="xl" target="_blank" icon="mdi:radar" color="primary" variant="ghost" label="ASG Radar"  />
+      </template>
+
+      <template #center>
+        <UHeaderLinks :links="filteredNavigation" />
+      </template>
+
+      <template #right>
+      <div class="user-section">
+        <div v-if="user" >
+          <span class="mr-1.5">Witaj, {{ user.displayName || user.email || 'Użytkowniku' }}!</span>
+          <UButton @click="handleLogout" color="primary" variant="ghost" size="sm">Wyloguj</UButton>
         </div>
-      </ClientOnly>
-    </nav>
+        <div v-else>
+          <NuxtLink class="link" to="/login">Zaloguj się</NuxtLink>
+        </div>
+      </div>
+      <UColorModeButton />
+      </template>
+
+      </UHeader> 
+  </ClientOnly>
+
+  <div class="layout">
     <slot />
   </div>
 </template>
@@ -64,59 +67,14 @@ const filteredNavigation = computed(() =>
 @use "/assets/styles/colors";
 
 .layout {
-  margin: 20px;
+  margin: 0 30px;
 }
 
-.nav {
-  margin-top: 10px;
-  margin-bottom: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.nav ul {
-  display: flex;
-  gap: 20px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.nav .link {
-  color: colors.$green-medium;
-  font-size: 14pt;
-  text-decoration: none;
-}
-
-.nav .link:hover {
-  color: colors.$green-light;
-}
-
-.nav .link.current {
-  color: colors.$green-light;
-  text-decoration: underline;
-  pointer-events: none;
-}
-
-.user-section {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
 
 .user-section span {
   color: colors.$green-medium;
-  font-size: 14pt;
+  font-size: 12pt;
 }
 
-.user-section .link {
-  color: colors.$green-medium;
-  cursor: pointer;
-  font-size: 14pt;
-}
 
-.user-section .link:hover {
-  color: colors.$green-light;
-}
 </style>

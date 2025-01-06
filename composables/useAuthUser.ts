@@ -19,6 +19,10 @@ export const useAuthUser = () => {
         role.value = null;
       }
     }
+    else {
+      console.log('Użytkownik niezalogowany');
+      role.value = 'niezalogowany';
+    }
   };
 
   // Nasłuchiwanie zmian użytkownika w Firebase Authentication

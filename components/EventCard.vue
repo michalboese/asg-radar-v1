@@ -2,62 +2,136 @@
 import type { Event } from '@/stores/eventsStore'
 import type { Organizer } from '@/stores/organizersStore';
 
+const { getRandomImage } = useRandomImage()
+
 const { event } = defineProps<{ event: Event, organizer: Organizer }>()
 
-const isHover = ref(false)
+const eventDate = event.date.toDate();
+const formattedDate = new Intl.DateTimeFormat('pl-PL', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+}).format(eventDate);
+
+const statusClass = computed(() => {
+  return {
+    'status-canceled': event.status === 'odwołane',
+    'status-planned': event.status === 'zaplanowane',
+    'status-in-progress': event.status === 'w trakcie',
+    'status-completed': event.status === 'zakończone'
+  };
+});
 </script>
 
 <template>
-  <div class="card" :class="{ hover: isHover }">
-    <h2>{{ event.title }}</h2>
-    <OrganizerLink :organizer="organizer" />
-    <h2>{{ event.date.toDate().toLocaleDateString() }}</h2>
-    <RenderMarkdown :source="event.intro" />
-    <NuxtLink
-            class="more"
-            :to="`/events/${event.id}`"
-            @mouseenter="isHover = true"
-            @mouseleave="isHover = false"
-            >
-            Więcej ...
-        </NuxtLink>
-  </div>
+  <UCard>
+    <template #header>
+      <h1>{{ event.title }}</h1>
+    </template>
+    <div class="container">
+      <div class="img">
+        <img :src="getRandomImage()" alt="Event image" />
+      </div>
+
+    <div class="info">
+      <UButton
+        class="organizerLink"
+        size="xl"
+        variant="outline"
+        :to="`/organizers/${organizer.slug}`"
+        >
+        Organizator: {{ organizer.name }}
+      </UButton>
+      <div class="event-info">
+        <p>{{ event.location.city }}</p>
+        <p>|</p>
+        <div class="flex gap-2">Status: <div :class="statusClass">{{ event.status }}</div></div>
+        <p>|</p>
+        <p>{{ formattedDate }}</p>
+      </div>
+
+      <div class="intro"><p>{{ event.intro }}</p></div>
+      
+    </div>
+    </div>
+    <template #footer>
+        <UButton 
+        size="sm" 
+        variant="ghost" 
+        :to="`/events/${event.id}`">
+        Przejdź ...
+      </UButton>
+      </template>
+  </UCard>
 </template>
 
 <style scoped lang="scss">
 @use "@/assets/styles/colors.scss";
 
-.card {
-  padding: 15px 15px 35px;
-  border: 1px solid colors.$green-dark;
-  border-radius: 5px;
-  margin-bottom: 25px;
-  font-size: 12pt;
-  position: relative;
+.event-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
 }
 
-.card .title {
-  font-size: 20pt;
+.event-info p {
+  margin: 0;
+  line-height: 1.5;
 }
 
-.card .more {
-  color: colors.$green-medium;
-  font-size: 12pt;
-  padding: 5px 10px;
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
+.organizerLink {
+  margin-bottom: 0.5rem;
+  width: fit-content;
 }
 
-.card.hover {
-  border-color: colors.$green-medium;
+.container {
+  display: flex;
+  gap: 2rem;
 }
 
-.card.hover .title {
-  color: colors.$green-light;
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.card.hover .more {
-  color: colors.$green-light;
+.event-info {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
 }
+
+.intro {
+  font-size: 18px;
+}
+
+.img {
+  min-width: 300px;
+  max-width: 300px;
+  height: auto;
+}
+
+.img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3%;
+}
+
+.status-canceled {
+  color: colors.$cancelled;
+}
+
+.status-planned {
+  color: colors.$planned;
+}
+
+.status-in-progress {
+  color: colors.$in-progress;
+}
+
 </style>

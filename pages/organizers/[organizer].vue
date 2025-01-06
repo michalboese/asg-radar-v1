@@ -10,7 +10,7 @@ const organizersStore = useOrganizersStore();
 await organizersStore.fetchOrganizers();
 
 definePageMeta({
-  layout: 'breadcrumb'
+  layout: 'default'
 })
 
 const organizerSlug = useParam('organizer');
@@ -33,8 +33,8 @@ if (organizer.value) {
     <main>
       <div v-if="organizersStore.isLoading" class="loading-spinner"></div>
       <template v-else>
-        <h1>Organizator: {{ organizer.name }}</h1>
-        <div>
+        <h1 class="mt-10">Wydarzenia organizatora: {{ organizer.name }}</h1>
+        <div class="events">
           <EventCard
             v-for="event in eventsStore.events.filter((e) => e.organizerId === organizer.slug)"
             :key="event.id"
@@ -45,3 +45,17 @@ if (organizer.value) {
       </template>
     </main>
   </template>
+
+  <style scoped lang="scss">
+  @use "@/assets/styles/colors.scss";
+
+  .events {
+    display: flex;  
+    flex-direction: column;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 100px;
+    gap: 20px;
+    width: 900px;
+}
+</style>

@@ -14,7 +14,7 @@ await organizersStore.fetchOrganizers();
 const isJoining = ref(false);
 
 definePageMeta({
-  layout: 'breadcrumb',
+  layout: 'default',
 })
 
 const eventSlug = useParam('event')
