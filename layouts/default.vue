@@ -46,7 +46,7 @@ const filteredNavigation = computed(() =>
       <div class="user-section">
         <div v-if="user" >
           <span class="mr-1.5">Witaj, {{ user.displayName || user.email || 'Użytkowniku' }}!</span>
-          <UButton @click="handleLogout" color="primary" variant="ghost" size="sm">Wyloguj</UButton>
+          <UButton @click="handleLogout" to="/" color="primary" variant="ghost" size="sm">Wyloguj</UButton>
         </div>
         <div v-else>
           <NuxtLink class="link" to="/login">Zaloguj się</NuxtLink>

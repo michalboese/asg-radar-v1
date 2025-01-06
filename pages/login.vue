@@ -170,7 +170,7 @@ async function onSubmit(event: FormSubmitEvent<any> & { formKey: string }) {
             </div>
 
             <div v-else-if="item.key === 'register'" class="space-y-3">
-              <UFormGroup label="Ksywka" name="nickName">
+              <UFormGroup label="Pseudonim" name="nickName">
                 <UInput v-model="registerForm.nickName" />
               </UFormGroup>
               <UFormGroup label="Email" name="email">

@@ -118,5 +118,6 @@ const handleFilterChange = (newFilters: Filter) => {
   margin-top: 40px;
   z-index: 1;
   min-height: 700px;
+  max-height: 700px;
 }
 </style>

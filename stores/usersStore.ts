@@ -1,4 +1,5 @@
 import { collection, setDoc, getDocs, doc, Timestamp, getDoc, updateDoc } from 'firebase/firestore';
+import { useOrganizersStore } from '@/stores/organizersStore';
 
 // Typ użytkownika
 export interface User {
@@ -89,6 +90,15 @@ export interface User {
           this.users = this.users.map((user) =>
             user.id === userId ? { ...user, role: newRole } : user,
           );
+        if (newRole === 'organizer') {
+          const user = this.users.find((u) => u.id === userId);
+          console.log('user', user);
+          if (user) {
+            console.log('Tworzenie organizatora dla:', user.email);
+            const organizersStore = useOrganizersStore();
+            await organizersStore.createOrganizer(user.email, user.nickname);
+          }
+        }
         } catch (err) {
           this.error = 'Błąd podczas aktualizacji roli użytkownika';
           console.error(err);

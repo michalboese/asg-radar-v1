@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
 
 export interface Organizer {
   id: string;
@@ -34,6 +34,28 @@ export const useOrganizersStore = defineStore('organizers', {
     async findOrganizerByEmail(email: string): Promise<Organizer | null> {
       const organizer = this.organizers.find((org) => org.email === email);
       return organizer || null;
+    },
+
+    async createOrganizer(email: string, nickName: string): Promise<void> {
+      this.isLoading = true;
+      try {
+        const slug = nickName.toLowerCase().replace(/\s+/g, '-');
+        const newOrganizer: Omit<Organizer, 'id'> = {
+          slug,
+          name: nickName,
+          email,
+          count: 0,
+        };
+        
+        const organizersRef = collection(useFirestore(), 'organizers');
+        const docRef = await addDoc(organizersRef, newOrganizer);
+
+        this.organizers.push({ id: docRef.id, ...newOrganizer });
+      } catch (error) {
+        console.error('Error creating organizer:', error);
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
 

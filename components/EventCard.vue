@@ -11,8 +11,6 @@ const formattedDate = new Intl.DateTimeFormat('pl-PL', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
   hour12: false,
 }).format(eventDate);
 
@@ -51,6 +49,7 @@ const statusClass = computed(() => {
         <div class="flex gap-2">Status: <div :class="statusClass">{{ event.status }}</div></div>
         <p>|</p>
         <p>{{ formattedDate }}</p>
+        <p>{{ event.duration.start }}</p>
       </div>
 
       <div class="intro"><p>{{ event.intro }}</p></div>

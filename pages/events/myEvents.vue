@@ -36,9 +36,8 @@ const displayedEvents = computed(() => {
 
 <template>
   <main>
-    <h1>ASG Radar</h1>
     <div v-if="organizersStore.isLoading" class="loading-spinner"></div>
-    <div v-else class="grid">
+    <div v-else>
       <div class="events">
         <EventCard
           v-for="event in displayedEvents"
@@ -54,24 +53,14 @@ const displayedEvents = computed(() => {
 <style scoped lang="scss">
 @use "@/assets/styles/colors.scss";
 
-.grid {
-  display: grid;
-  grid-template-columns: 400px 1fr 250px;
-  gap: 20px;
-  width: 100%;
-}
-
-.filters {
-  padding: 15px;
-  border: 1px solid colors.$green-dark;
-  border-radius: 5px;
-  grid-column: 1;
-  height: fit-content;
-}
 
 .events {
-  display: grid;
-  gap: 20px;
-  grid-column: 2;
+    display: flex;  
+    flex-direction: column;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 100px;
+    gap: 20px;
+    width: 900px;
 }
 </style>

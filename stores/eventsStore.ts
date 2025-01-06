@@ -2,7 +2,7 @@ import { collection, getDocs, updateDoc, arrayUnion, doc, addDoc } from 'firebas
 import type { Timestamp } from 'firebase-admin/firestore'
 
 export interface Event {
-  id: string;
+  id?: string;
   organizerId: string;
   title: string;
   intro: string;
@@ -11,6 +11,7 @@ export interface Event {
   location: {
       address: string;
       city: string;
+      postalCode: string;
       coordinates: {
           lat: number;
           lng: number;
@@ -22,8 +23,8 @@ export interface Event {
   images: string[];
   price: number;
   duration: {
-      start: Timestamp;
-      end: Timestamp;
+      start: string;
+      end: string;
   };
   contact: {
       email: string;
@@ -67,6 +68,18 @@ export const useEventsStore = defineStore('events', {
         participants: arrayUnion(userId),
       });
       event.participants.push(userId);
+    },
+
+    async leaveEvent(eventId: string, userId: string) {
+      const event = this.getEventById(eventId);
+      if (!event || !event.participants.includes(userId)) {
+        throw new Error('Cannot leave this event');
+      }
+      const docRef = doc(useFirestore(), 'events', eventId);
+      await updateDoc(docRef, {
+        participants: event.participants.filter((id) => id !== userId),
+      });
+      event.participants = event.participants.filter((id) => id !== userId);
     },
 
     async addEvent(newEvent: Omit<Event, 'id'>) {
