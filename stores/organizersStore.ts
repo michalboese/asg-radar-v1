@@ -1,4 +1,4 @@
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 
 export interface Organizer {
   id: string;
@@ -53,6 +53,40 @@ export const useOrganizersStore = defineStore('organizers', {
         this.organizers.push({ id: docRef.id, ...newOrganizer });
       } catch (error) {
         console.error('Error creating organizer:', error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async deleteOrganizerByEmail(email: string): Promise<void> {
+      this.isLoading = true;
+      try {
+        const organizer = this.organizers.find((org) => org.email === email);
+        if (organizer) {
+          const organizerRef = doc(useFirestore(), 'organizers', organizer.id);
+          await deleteDoc(organizerRef);
+          this.organizers = this.organizers.filter((org) => org.email !== email);
+        }
+      } catch (error) {
+        console.error('Error deleting organizer:', error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async incrementOrganizerEventCount(slug: string): Promise<void> {
+      this.isLoading = true;
+      try {
+        const organizer = this.organizers.find((org) => org.slug === slug);
+        if (organizer) {
+          const organizerRef = doc(useFirestore(), 'organizers', organizer.id);
+          await updateDoc(organizerRef, {
+            count: organizer.count + 1,
+          });
+          organizer.count += 1;
+        }
+      } catch (error) {
+        console.error('Error updating organizer event count:', error);
       } finally {
         this.isLoading = false;
       }

@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { Organizer } from "@/stores/organizersStore";
 import { useOrganizersStore } from '@/stores/organizersStore';
 
 const organizersStore = useOrganizersStore();
 await organizersStore.fetchOrganizers();
 
-const organizerName = ref<string | null>(null);
+const organizerName = ref<string>('');
 
 const filteredOrganizers = computed(() =>
   organizersStore.organizers.filter((organizer) => {
@@ -21,22 +20,26 @@ const filteredOrganizers = computed(() =>
 <template>
   <div v-if="organizersStore.isLoading" class="loading-spinner"></div>
   <main v-else>
-    <h1>
-      Wyszukaj organizatora:
-      <input
+    <h1 class="mt-4">
+      Wyszukaj organizatora
+      <UInput
+        class="w-1/4 mx-auto mt-4"  
         type="text"
+        size="xl"
         v-model="organizerName"
         placeholder="Nazwa organizatora"
       />
     </h1>
-    <NuxtLink
-      v-for="organizer in filteredOrganizers"
-      :key="organizer.id"
-      :to="`/organizers/${organizer.slug}`"
-      class="organizerItem"
-    >
-      <span class="text"> {{ organizer.name }} - {{ organizer.count }} </span>
-    </NuxtLink>
+    <div class="flex w-1/4 mx-auto mt-4" v-for="organizer in filteredOrganizers">
+      <UButton
+        variant="outline"
+        :to="`/organizers/${organizer.slug}`"
+        size="xl"
+        class="mx-auto mt-4"
+        >
+        <span class="text"> {{ organizer.name }} - {{ organizer.count }} </span>
+      </UButton>
+  </div>
   </main>
 </template>
 

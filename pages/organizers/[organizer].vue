@@ -21,6 +21,12 @@ const organizer = computed(() =>
 
 const organizerState = useOrganizerState();
 
+const sortedEvents = computed(() => {
+  return eventsStore.events
+    .filter(event => event.organizerId === organizerSlug)
+    .sort((a, b) => new Date(a.date.toDate()).getTime() - new Date(b.date.toDate()).getTime())
+});
+
 if (organizer.value) {
   organizerState.value = {
     name: organizer.value.name,
@@ -36,7 +42,7 @@ if (organizer.value) {
         <h1 class="mt-10">Wydarzenia organizatora: {{ organizer.name }}</h1>
         <div class="events">
           <EventCard
-            v-for="event in eventsStore.events.filter((e) => e.organizerId === organizer.slug)"
+            v-for="event in sortedEvents"
             :key="event.id"
             :event="event"
             :organizer="organizer"

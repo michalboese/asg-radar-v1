@@ -7,6 +7,8 @@ import { useUsersStore } from '@/stores/usersStore';
 const auth = getAuth();
 const currentUser = auth.currentUser;
 
+const isOrganizer = computed(() => currentUser?.email === event.value.contact.email);
+
 const eventsStore = useEventsStore();
 await eventsStore.fetchEvents();
 
@@ -23,6 +25,9 @@ await organizersStore.fetchOrganizers();
 const isJoining = ref(false);
 
 const images = useAllImages()
+
+const isOpen = ref(false)
+const isSave = ref(false)
 
 definePageMeta({
   layout: 'default',
@@ -84,6 +89,26 @@ const leaveEvent = async () => {
   }
 };
 
+const removeFromEvent = async (userEmail: string) => {
+  isJoining.value = true;
+  try {
+    await eventsStore.leaveEvent(event.value.id ?? '', userEmail);
+  } catch (error) {
+    console.error('Error leaving event:', error);
+  } finally {
+    isJoining.value = false;
+  }
+};
+
+const saveEvent = async () => {
+  try {
+    await eventsStore.saveEvent(event.value);
+    isSave.value = true;
+  } catch (error) {
+    console.error('Error saving event:', error);
+  }
+};
+
 const statusClass = computed(() => {
   return {
     'status-canceled': event.value.status === 'odwołane',
@@ -96,6 +121,7 @@ const statusClass = computed(() => {
 </script>
 
 <template>
+  <ClientOnly>
     <main class="mb-20">
       <div v-if="organizersStore.isLoading" class="loading-spinner"></div>
       <template v-else>
@@ -103,9 +129,10 @@ const statusClass = computed(() => {
           <div class="w-3/5">
           <UCard class="event-details">
             <template #header>
-              <h1>{{ event?.title }}</h1>
+              <UInput v-if="isOrganizer" v-model="event.title"/>
+              <h1 v-else>{{ event.title }}</h1>
             </template>
-
+ 
             <UButton
               class="organizerLink"
               size="xl"
@@ -115,19 +142,30 @@ const statusClass = computed(() => {
               Organizator: {{ organizer.name }}
             </UButton>
 
-            <div class="flex flex-row gap-4 mt-4 items-center">
+            <div class="flex flex-row mt-4 items-center">
               
-              <p>{{ event.location.city }}</p>
+              <p class="mr-2">{{ event.location.city }}</p>
               <p>|</p>
-              <p>{{ event.location.address }}</p>
-              <p>|</p>
-              <div class="flex gap-2">Status: <div :class="statusClass">{{ event.status }}</div></div>
-              <p>|</p>
+              <UButton @click="isOpen = true" variant="ghost" :label="event.location.address"/>
+              <p class="mr-2">|</p>
+              <div class="flex gap-2">Status: <div class="mr-2" :class="statusClass">{{ event.status }}</div></div>
+              <p class="mr-2">|</p>
               <p>{{ formattedDate }}</p>
 
             </div>
-
-            <div class="flex flex-row gap-4 mt-4 items-center">
+            <div v-if="isOrganizer" class="flex flex-row gap-4 mt-4 items-center">
+              
+              <UInput type="time" v-if="isOrganizer" v-model="event.duration.start" placeholder="Start"/>
+              <p>|</p>
+              <UInput type="time" v-if="isOrganizer" v-model="event.duration.end" placeholder="Koniec"/>
+              <p>|</p>
+              <UInput style="width: 85px;" type="number" v-if="isOrganizer" v-model="event.price" placeholder="Cena" > 
+                <template #trailing>
+                  <span class="text-gray-500 dark:text-gray-400 text-xs">PLN</span>
+                </template>
+              </UInput>
+            </div>
+            <div v-else class="flex flex-row gap-4 mt-4 items-center">
               
               <p>Start: {{ event.duration.start }}</p>
               <p>|</p>
@@ -137,24 +175,27 @@ const statusClass = computed(() => {
 
             </div>
             <UDivider class="mt-4" label="Wprowadzenie"/>
-            <p class="mt-4">{{ event.intro }}</p>
+            <UInput class="mt-2" v-if="isOrganizer" v-model="event.intro"/>
+            <p v-else class="mt-4">{{ event.intro }}</p>
             <UDivider class="mt-4" label="Opis"/>
-            <pre class="text-sm mt-4">{{ event.description }}</pre>
+            <UTextarea autoresize class="mt-2" v-if="isOrganizer" v-model="event.description"/>
+            <pre v-else class="text-sm mt-4">{{ event.description }}</pre>
             <UDivider class="mt-4" />
             <UCarousel v-slot="{ item }" :items="images" :ui="{ item: 'basis-full' }" class="rounded-lg overflow-hidden ml-10 mr-10 mt-8" arrows>
               <img :src="item" width="1920" height="1080" class="w-full" draggable="false">
             </UCarousel>
             
             <template #footer>
-              <ClientOnly>
+              <div class="flex ">
+
               <div v-if="event?.status === 'zaplanowane'">
-                <UButton 
+                  <UButton 
                   icon="i-heroicons-check-circle" 
                   v-if="canJoin" 
                   @click="joinEvent"
                   :disabled="isJoining"
                   label="Dołącz"/>
-
+                  
                   <UButton 
                   icon="i-heroicons-x-circle" 
                   v-else 
@@ -162,6 +203,9 @@ const statusClass = computed(() => {
                   color="red"
                   :disabled="isJoining"
                   label="Opuść"/>
+                </div>
+
+                <UButton class="ml-auto" @click="saveEvent" v-if="isOrganizer" label="Zapisz zmiany" icon="i-heroicons-bookmark"/>
               </div>
               <p class="mb-4 mt-4"> {{ event?.participants.length }} / {{ event?.maxParticipants }} uczestników :</p>
               <div v-for="user in participants" class="flex flex-row gap-4 items-center">
@@ -169,8 +213,13 @@ const statusClass = computed(() => {
                 <p>{{ user.nickname }}</p>
                 <p>{{ user.firstName }}</p>
                 <p>{{ user.lastName}}</p>
+                <UButton 
+                  icon="i-heroicons-x-circle" 
+                  @click="removeFromEvent(user.email)"
+                  color="red"
+                  :disabled="isJoining"
+                  label="Usuń"/>
               </div>
-            </ClientOnly>
             </template>
           </UCard>
           </div>
@@ -191,6 +240,28 @@ const statusClass = computed(() => {
         </div>
       </template>
     </main>
+    <UModal v-model="isOpen">
+        <LMap style="height: 450px; width: 650px;" :zoom="6" :center="[event.location.coordinates.lat, event.location.coordinates.lng]">
+              <LTileLayer
+                  url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+                  layer-type="base"
+                  name="Stadia Maps Basemap"
+                />
+                <LLayerGroup>
+                    <LMarker :lat-lng="[event.location.coordinates.lat, event.location.coordinates.lng]">
+                    </LMarker>
+                </LLayerGroup>
+          </LMap>
+    </UModal>
+
+    <UModal v-model="isSave">
+      <UPageCard 
+        title="Sukces!"
+        description="Pomyślnie zapisano zmiany"
+        icon="i-heroicons-check-circle"
+      />
+    </UModal>
+  </ClientOnly>
   </template>
 
   <style scoped lang="scss">

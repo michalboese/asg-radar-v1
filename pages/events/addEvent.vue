@@ -14,6 +14,17 @@ await organizersStore.fetchOrganizers();
 
 const isOpen = ref(false)
 
+const lat = ref(52.025459)
+const lng = ref(19.02832)
+
+// Funkcja obsługująca zmianę współrzędnych markera
+const updatePosition = (event: any) => {
+  const newLatLng = event.target.getLatLng();
+  lat.value = newLatLng.lat;
+  lng.value = newLatLng.lng;
+  console.log('New position:', newLatLng);
+};
+
 const date = ref(new Date())
 const formattedDate = computed(() => {
   return new Intl.DateTimeFormat('pl-PL', {
@@ -83,9 +94,12 @@ const submitEvent = async () => {
     newEvent.value.date = Timestamp.fromDate(date.value);
     newEvent.value.duration.start = startTime.value.toString();
     newEvent.value.duration.end = endTime.value.toString();
+    newEvent.value.location.coordinates = { lat: lat.value, lng: lng.value };
 
     // Dodanie wydarzenia do bazy danych
     await eventsStore.addEvent(newEvent.value);
+
+    navigateTo('/events/myEvents');
   } catch (error) {
     console.error('Błąd podczas dodawania wydarzenia:', error);
     alert('Nie udało się dodać wydarzenia.');
@@ -97,6 +111,7 @@ const submitEvent = async () => {
 
 <template> 
   <ClientOnly>
+    <UPage>
     <UCard class="w-fit mx-auto mt-10 mb-10">
     <template #header>
       <h1>Dodaj nowe wydarzenie</h1>
@@ -154,11 +169,11 @@ const submitEvent = async () => {
     <div class="flex gap-4">
 
       <UFormGroup label="Szerokość geograficzna" class="w-1/2">
-        <UInput v-model="newEvent.location.coordinates.lat" icon="i-heroicons-map-pin" type="number"/>
+        <UInput v-model="lat" icon="i-heroicons-map-pin" type="number"/>
       </UFormGroup>
 
       <UFormGroup label="Długość geograficzna" class="w-1/2">
-        <UInput v-model="newEvent.location.coordinates.lng" icon="i-heroicons-map-pin" type="number"/>
+        <UInput v-model="lng" icon="i-heroicons-map-pin" type="number"/>
       </UFormGroup>
 
 
@@ -179,9 +194,35 @@ const submitEvent = async () => {
     
     </div>
     <template #footer>
-      <UButton class="w-fit" icon="i-heroicons-plus" color="primary" size="lg" @click="submitEvent" to="/events/myEvents">Dodaj wydarzenie</UButton>
+      <UButton class="w-fit" icon="i-heroicons-plus" color="primary" size="lg" @click="submitEvent">Dodaj wydarzenie</UButton>
     </template>
   </UCard>
+
+    <template #right>
+      <UAside>
+        <h2 class="mb-4">Przesuń znacznik!</h2>
+      <LMap
+      class="map"
+      ref="map"
+      :zoom="5"
+      :center="[52.025459, 19.02832]"
+      :use-global-leaflet="false"
+      
+    >
+      <LTileLayer
+        url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+        layer-type="base"
+        name="Stadia Maps Basemap"
+      />
+
+      <LLayerGroup>
+          <LMarker :draggable="true" :lat-lng="[lat, lng]" @dragend="updatePosition">
+          </LMarker>
+      </LLayerGroup>
+    </LMap>
+  </UAside>
+    </template>
+  </UPage>
   <UModal v-model="isOpen">
     <UPageCard
     title="Błąd"
@@ -191,3 +232,12 @@ const submitEvent = async () => {
     </UModal>
   </ClientOnly>
   </template>
+
+<style scoped lang="scss">
+.map {
+  z-index: 1;
+  min-height: 700px;
+  max-height: 700px;
+  border-radius: 0.6em;
+}
+</style>

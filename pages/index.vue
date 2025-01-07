@@ -17,34 +17,39 @@ await organizersStore.fetchOrganizers();
 const filters = ref<Filter>({})
 
 const filteredEvents = computed(() =>
-  eventsStore.events.filter((event: Event) => {
-    const matchStatus =  event.status === "zaplanowane"
-    const matchesTitle = filters.value.title
-      ? event.title
-        .toLowerCase()
-        .includes(filters.value.title.toLowerCase())
-      : true
-    const matchesOrganizer = filters.value.organizerName
-      ? event.organizerId
-        .toLowerCase()
-        .includes(filters.value.organizerName.toLowerCase())
-      : true
-    const matchesCity = filters.value.city
-      ? event.location.city
-        .toLowerCase()
-        .includes(filters.value.city.toLowerCase())
-      : true
-    const matchesDate = filters.value.date
-      ? format(new Date(event.date.toDate()), 'yyyy-MM-dd') === format(filters.value.date, 'yyyy-MM-dd')
-      : true
+  eventsStore.events
+    .filter((event: Event) => {
+      const matchStatus = event.status === "zaplanowane"
+      const matchesTitle = filters.value.title
+        ? event.title
+          .toLowerCase()
+          .includes(filters.value.title.toLowerCase())
+        : true
+      const matchesOrganizer = filters.value.organizerName
+        ? event.organizerId
+          .toLowerCase()
+          .includes(filters.value.organizerName.toLowerCase())
+        : true
+      const matchesCity = filters.value.city
+        ? event.location.city
+          .toLowerCase()
+          .includes(filters.value.city.toLowerCase())
+        : true
+      const matchesDate = filters.value.date
+        ? format(new Date(event.date.toDate()), 'yyyy-MM-dd') === format(filters.value.date, 'yyyy-MM-dd')
+        : true
 
-    return  matchStatus && matchesTitle && matchesOrganizer && matchesCity && matchesDate 
-  })
+      return matchStatus && matchesTitle && matchesOrganizer && matchesCity && matchesDate
+    })
+    .sort((a, b) => new Date(a.date.toDate()).getTime() - new Date(b.date.toDate()).getTime())
 )
 
 const handleFilterChange = (newFilters: Filter) => {
   filters.value = newFilters
 }
+
+const organizer = (event: Event) =>
+  organizersStore.organizers.find((o) => o.slug === event.organizerId) || {} as Organizer;
 </script>
 
 <template>
@@ -65,8 +70,7 @@ const handleFilterChange = (newFilters: Filter) => {
         v-for="event in filteredEvents"
         :key="event.id"
         :event="event"
-        :organizer="organizersStore.organizers.find((o) => o.slug === event.organizerId) || {} as Organizer">
-      </EventCard>
+        :organizer="organizer(event)"/>
     </div>
     <template #right>
       <LMap
@@ -86,12 +90,12 @@ const handleFilterChange = (newFilters: Filter) => {
       <LLayerGroup>
         <div v-for="event in filteredEvents" :key="event.id">
           <LMarker :lat-lng="[event.location.coordinates.lat, event.location.coordinates.lng]" >
-            <LPopup>{{ event.title }} <br>
+            <LPopup>
               <ULink
                 :to="`/events/${event.id}`"
                 active-class="text-primary"
               >
-                Link
+              {{ event.title }}
               </ULink> 
             </LPopup>
           </LMarker>
@@ -119,5 +123,6 @@ const handleFilterChange = (newFilters: Filter) => {
   z-index: 1;
   min-height: 700px;
   max-height: 700px;
+  border-radius: 0.6em;
 }
 </style>

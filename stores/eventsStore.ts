@@ -1,5 +1,6 @@
 import { collection, getDocs, updateDoc, arrayUnion, doc, addDoc } from 'firebase/firestore';
 import type { Timestamp } from 'firebase-admin/firestore'
+import { useOrganizersStore } from '@/stores/organizersStore';
 
 export interface Event {
   id?: string;
@@ -91,11 +92,24 @@ export const useEventsStore = defineStore('events', {
           id: docRef.id,
           ...newEvent,
         } as Event);
+
+        // Increment the organizer's event count
+        const organizersStore = useOrganizersStore();
+        console.log('Incrementing event count for organizer:', newEvent.organizerId);
+        await organizersStore.incrementOrganizerEventCount(newEvent.organizerId);
       } catch (error) {
         console.error('Error adding event:', error);
         throw new Error('Nie udało się dodać wydarzenia');
       }
     },
+
+    async saveEvent(event: Event) {
+      if (!event.id) {
+        throw new Error('Event ID is required to save the event');
+      }
+      const docRef = doc(useFirestore(), 'events', event.id);
+      await updateDoc(docRef, { ...event });
+    }
   },
 
   getters: {

@@ -22,7 +22,7 @@ const links = [{
     </NuxtLayout>
   </UMain>
 
-  <UFooter :links="links">
+  <UFooter :links="links" class="mb-4 mt-4">
     <template #left>
       Copyright © {{ new Date().getFullYear() }}
     </template>
