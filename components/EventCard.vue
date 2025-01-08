@@ -55,15 +55,15 @@ const statusClass = computed(() => {
       <div class="intro"><p>{{ event.intro }}</p></div>
       
     </div>
+  </div>
+  <div class="flex justify-end">
+    <UButton 
+    size="xl" 
+    icon="i-heroicons-chevron-right"
+    variant="ghost" 
+    :to="`/events/${event.id}`">
+    </UButton>
     </div>
-    <template #footer>
-        <UButton 
-        size="sm" 
-        variant="ghost" 
-        :to="`/events/${event.id}`">
-        Przejdź ...
-      </UButton>
-      </template>
   </UCard>
 </template>
 

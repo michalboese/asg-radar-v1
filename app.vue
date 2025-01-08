@@ -2,14 +2,7 @@
 const user = useCurrentUser()
 
 const links = [{
-  label: 'Nuxt UI',
-  to: 'https://ui.nuxt.com/'
-}, {
-  label: 'Nuxt Docs',
-  to: 'https://nuxt.com'
-}, {
-  label: 'Nuxt Studio',
-  to: 'https://nuxt.studio'
+  label: 'Znajdź coś dla siebie'
 }]
 
 </script>
@@ -22,15 +15,15 @@ const links = [{
     </NuxtLayout>
   </UMain>
 
-  <UFooter :links="links" class="mb-4 mt-4">
+  <UFooter :links="links" class="mb-4 mt-8">
     <template #left>
-      Copyright © {{ new Date().getFullYear() }}
+      Copyright © {{ new Date().getFullYear() }} ASG Radar
     </template>
 
     <template #right>
-      <UButton icon="i-simple-icons-x" color="gray" variant="ghost" to="https://x.com/nuxt_js" target="_blank" />
-      <UButton icon="i-simple-icons-discord" color="gray" variant="ghost" to="https://discord.com/invite/ps2h6QT" target="_blank" />
-      <UButton icon="i-simple-icons-github" color="gray" variant="ghost" to="https://github.com/nuxt/nuxt" target="_blank" />
+      <UButton icon="i-simple-icons-x" color="gray" variant="ghost" target="_blank" />
+      <UButton icon="i-simple-icons-discord" color="gray" variant="ghost" target="_blank" />
+      <UButton icon="i-simple-icons-github" color="gray" variant="ghost" target="_blank" />
     </template>
   </UFooter>
 </template>

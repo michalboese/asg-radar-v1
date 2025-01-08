@@ -214,6 +214,7 @@ const statusClass = computed(() => {
                 <p>{{ user.firstName }}</p>
                 <p>{{ user.lastName}}</p>
                 <UButton 
+                  v-if="isOrganizer" 
                   icon="i-heroicons-x-circle" 
                   @click="removeFromEvent(user.email)"
                   color="red"
@@ -229,11 +230,8 @@ const statusClass = computed(() => {
                   <h1>Chat</h1>
                 </template>
 
-                <Placeholder class="h-32" />
+                <Chat />
 
-                <template #footer>
-                  <Placeholder class="h-8" />
-                </template>
               </UCard>
             </div>
           
